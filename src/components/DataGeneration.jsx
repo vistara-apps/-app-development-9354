@@ -35,13 +35,44 @@ const DataGeneration = () => {
     'Clinical Research': ['treatment_response', 'adverse_events', 'biomarker_data']
   }
 
+  const { addToast } = useData().toast || { addToast: () => {} }
+
+  const validateForm = () => {
+    const errors = {}
+    
+    if (!formData.description.trim()) {
+      errors.description = 'Description is required'
+    } else if (formData.description.length < 5) {
+      errors.description = 'Description must be at least 5 characters'
+    }
+    
+    if (formData.compliance.length === 0) {
+      errors.compliance = 'Please select at least one compliance requirement'
+    }
+    
+    if (formData.patterns.length === 0) {
+      errors.patterns = 'Please select at least one data pattern'
+    }
+    
+    return errors
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
+    
+    const formErrors = validateForm()
+    if (Object.keys(formErrors).length > 0) {
+      // Display the first error as a toast
+      const firstError = Object.values(formErrors)[0]
+      addToast(firstError, 'error')
+      return
+    }
+    
     setIsGenerating(true)
     
     try {
       await generateDataset(formData)
-      alert('Dataset generation started! You can monitor progress in the dashboard.')
+      addToast('Dataset generation started! You can monitor progress in the dashboard.', 'success')
       setFormData({
         industry: 'Healthcare',
         description: '',
@@ -51,7 +82,7 @@ const DataGeneration = () => {
         patterns: []
       })
     } catch (error) {
-      alert('Error generating dataset: ' + error.message)
+      addToast('Error generating dataset: ' + (error.message || 'Unknown error'), 'error')
     } finally {
       setIsGenerating(false)
     }

@@ -4,14 +4,28 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-:root {
-  --primary: hsl(200, 80%, 50%);
-  --accent: hsl(160, 100%, 40%);
-  --bg: hsl(220, 30%, 98%);
-  --surface: hsl(0, 0%, 100%);
-  --border: hsl(220, 10%, 90%);
-  --text-primary: hsl(220, 30%, 15%);
-  --text-secondary: hsl(220, 30%, 35%);
+@layer base {
+  :root {
+    --primary: hsl(200, 80%, 50%);
+    --accent: hsl(160, 100%, 40%);
+    --bg: hsl(220, 30%, 98%);
+    --surface: hsl(0, 0%, 100%);
+    --border: hsl(220, 10%, 90%);
+    --text-primary: hsl(220, 30%, 15%);
+    --text-secondary: hsl(220, 30%, 35%);
+    --shadow-card: 0 4px 12px hsla(220, 30%, 15%, 0.08);
+    --shadow-modal: 0 8px 24px hsla(220, 30%, 15%, 0.12);
+  }
+
+  .dark {
+    --bg: hsl(220, 30%, 10%);
+    --surface: hsl(220, 30%, 15%);
+    --border: hsl(220, 30%, 20%);
+    --text-primary: hsl(220, 30%, 90%);
+    --text-secondary: hsl(220, 30%, 70%);
+    --shadow-card: 0 4px 12px hsla(220, 30%, 5%, 0.2);
+    --shadow-modal: 0 8px 24px hsla(220, 30%, 5%, 0.3);
+  }
 }
 
 * {
@@ -21,8 +35,7 @@
 body {
   margin: 0;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: var(--bg);
-  color: var(--text-primary);
+  @apply bg-bg text-textPrimary transition-colors duration-200;
 }
 
 .scrollbar-hide {
@@ -35,5 +48,30 @@ body {
 }
 
 .gradient-bg {
-  background: linear-gradient(135deg, hsl(220, 30%, 8%) 0%, hsl(230, 40%, 12%) 100%);
+  @apply bg-gradient-to-br from-gray-900 to-gray-800 dark:from-gray-950 dark:to-gray-900;
+}
+
+/* Custom focus styles for better accessibility */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-gray-900;
+}
+
+/* Custom scrollbar */
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-bg;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border hover:bg-border/80 rounded-full transition-colors;
+  }
+  
+  .dark ::-webkit-scrollbar-thumb {
+    @apply bg-gray-700 hover:bg-gray-600;
+  }
 }

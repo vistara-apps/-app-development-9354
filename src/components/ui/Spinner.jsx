@@ -1,0 +1,27 @@
+import React from 'react'
+import { clsx } from 'clsx'
+import { Loader2 } from 'lucide-react'
+
+const Spinner = ({ size = 'md', className, ...props }) => {
+  const sizes = {
+    sm: 'h-4 w-4',
+    md: 'h-6 w-6',
+    lg: 'h-8 w-8',
+    xl: 'h-12 w-12'
+  }
+
+  return (
+    <Loader2
+      className={clsx(
+        'animate-spin text-primary',
+        sizes[size],
+        className
+      )}
+      {...props}
+      aria-hidden="true"
+    />
+  )
+}
+
+export default Spinner
+

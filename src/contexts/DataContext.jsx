@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react'
+import { useToast } from './ToastContext'
 
 const DataContext = createContext()
 
@@ -11,6 +12,7 @@ export const useData = () => {
 }
 
 export const DataProvider = ({ children }) => {
+  const toast = useToast()
   const [datasets, setDatasets] = useState([
     {
       dataset_id: '1',
@@ -103,7 +105,8 @@ export const DataProvider = ({ children }) => {
   const value = {
     datasets,
     complianceRecords,
-    generateDataset
+    generateDataset,
+    toast
   }
 
   return (
